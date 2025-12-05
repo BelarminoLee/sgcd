@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com">
+
+<head>
+<title>Pesquisa de entidades</title>
+</head>
+
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10">
+						<h1>Pesquisa de entidades</h1>
+					</div>
+
+					<div class="col-xs-2">
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-default" th:href="@{/entidades/nova}"> <i
+								class="glyphicon  glyphicon-plus-sign"></i> <span
+								class="hidden-xs  hidden-sm">Nova entidade</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<form method="GET" th:object="${entidadeFilter}">
+				<div class="row">
+					<div class="form-group  col-sm-6">
+						<label class="control-label" for="pontoFocal">Ponto Focal</label>
+						<input type="text" class="form-control" id="pontoFocal"
+							autofocus="autofocus" th:field="*{pontoFocal}" />
+					</div>
+
+					<div class="form-group  col-sm-6">
+						<label class="control-label" for="nome">Nome</label> <input
+							type="text" class="form-control" id="nome" th:field="*{nome}" />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group  col-sm-6">
+						<label class="control-label" for="telefone">Telefone</label> <input
+							type="text" class="form-control" id="telefone"
+							th:field="*{telefone}" />
+					</div>
+
+					<div class="form-group  col-sm-6">
+						<label class="control-label" for="email">Email</label> <input
+							type="text" class="form-control" id="email" th:field="*{email}" />
+					</div>
+				</div>
+
+
+
+
+				<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			</form>
+
+			<div class="table-responsive  bw-tabela-simples">
+				<table class="table  table-hover">
+					<thead>
+						<tr>
+
+							<th class="table-cervejas-col-nome"><brewer:order
+									page="${pagina}" field="nome" text="Nome" /></th>
+							<th class="table-cervejas-col-estilo">Descricao</th>
+							<th class="table-cervejas-col-origem">Ponto Focal</th>
+							<th class="table-cervejas-col-valor">Telefone</th>
+							<th class="table-cervejas-col-valor">Email</th>
+							<th class="table-cervejas-col-valor">Criado por</th>
+							<th class="table-cervejas-col-valor">Actualizado por</th>
+							<th class="table-cervejas-col-valor">Data de criacao</th>
+							<th class="table-cervejas-col-valor">Data de actualizacao</th>
+							<th class="table-cervejas-col-acoes">Accoes</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr th:each="entidade : ${pagina.conteudo}">
+
+							<td class="text-center" th:text="${entidade.nome}"></td>
+							<td th:text="${entidade.descricao}"></td>
+							<td th:text="${entidade.pontoFocal}"></td>
+							<td th:text="${entidade.telefone}"></td>
+							<td th:text="${entidade.email}"></td>
+							<td th:text="${entidade.usuarioCriacao.nome}"></td>
+							<td th:text="${entidade.usuarioActualizacao.nome}"></td>
+							<td th:text="${entidade.dataCriacao}"></td>
+							<td th:text="${entidade.dataActualizacao}"></td>
+							
+							<td class="text-center"><a
+								class="btn  btn-link  btn-xs  js-tooltip" title="Editar"
+								th:href="@{/entidades/{codigo}(codigo=${entidade.codigo})}"> <i
+									class="glyphicon glyphicon-pencil"></i>
+							</a> 
+							<a class="btn btn-link btn-xs js-tooltip js-exclusao-btn"
+   title="Excluir" href="#"
+   th:attr="data-url=@{/entidades/{codigo}(codigo=entidade.codigo)},
+            data-objeto=${entidade.nome}">
+   <i class="glyphicon glyphicon-remove"></i>
+</a></td>
+						</tr>
+						<tr th:if="${pagina.vazia}">
+							<td colspan="7">Nenhuma entidade encontrada</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<brewer:pagination page="${pagina}" />
+
+		</div>
+
+	</section>
+</body>
+</html>

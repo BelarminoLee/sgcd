@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com">
+	
+	<head>
+<title>Cadastro de decisão</title>
+<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/select2.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/ all.css}"/>	
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/AdminLTE.min.css}"/>
+</head>
+	
+<body>
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <form id="formEntidade">
+        <div class="modal-header">
+          <h4 class="modal-title" id="formModalLabel">Nova Entidades</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+
+			
+				<input type="hidden" th:field="*{codigo}" />
+				<input type="hidden" th:field="*{idDecisao}" />
+				
+
+				<div class="row">
+					<div class="col-sm-6  form-group  bw-required"
+						brewer:classforerror="entidade">
+						<label for="entidade" class="control-label">Entidade</label>
+						<div class="bw-field-action">
+							<select id="entidade" class="form-control" th:field="*{entidade}">
+								<option value="">Selecione a entidade</option>
+								<option th:each="entidade : ${entidades}"
+									th:value="${entidade.codigo}" th:text="${entidade.nome}"></option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-sm-6  form-group bw-required"
+						brewer:classforerror="ambito">
+						<label for="ambito" class="control-label">Ambito</label> <input
+							id="ambito" type="text" class="form-control" th:field="*{ambito}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 form-group  bw-required" brewer:classforerror="descricaoDecisao">
+						<label for="descricaoDecisao" class="control-label">Decisão</label>
+						<textarea id="descricaoDecisao" rows="3" class="form-control"
+							th:field="*{descricaoDecisao}"></textarea>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="form-group  col-sm-2">
+						<label for="dataDecisao" class="control-label">Data de decisão</label> 
+						<input type="text" class="form-control  js-date" id="dataDecisao" th:field="*{dataDecisao}" autocomplete="off" />
+					</div>
+					
+					<div class="form-group  col-sm-2">
+						<label for="prazo" class="control-label">Prazo</label> 
+						<input type="text" class="form-control  js-date" id="prazo" th:field="*{prazo}" autocomplete="off" />
+					</div>
+
+					<div class="form-group  col-md-4  bw-required"
+						th:classappend="${#fields.hasErrors('entidade')} ? has-error">
+						<label for="entidade" class="control-label">Responsaveis</label> 
+						<select  class="form-control select2" multiple="multiple"
+							th:field="*{pontosFocais}"
+							data-placeholder="Selecione o reponsavel" style="width: 100%;">
+							<option th:each="entidade : ${entidades}"
+								th:value="${entidade.codigo}" th:text="${entidade.pontoFocal}"></option>
+						</select>
+					</div>
+
+              <div class="col-sm-4  form-group  bw-required" brewer:classforerror="pontoSituacao">
+					<label for="pontoSituacao" class="control-label">Estado</label>
+					<select id="pontoSituacao" class="form-control" th:field="*{pontoSituacao}">
+						<option value="">Selecione o estado</option>
+						<option th:each="pontoSituacao : ${pontosSituacoes}" th:value="${pontoSituacao}" th:text="${pontoSituacao}"></option>
+					</select>
+				</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-12 form-group  bw-required"
+						brewer:classforerror="observacao">
+						<label for="observacao" class="control-label">Observação</label>
+						<textarea id="observacao" rows="5" class="form-control"
+							th:field="*{observacao}"></textarea>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					
+						<button type="button" class="btn  btn-primary  js-modal-cadastro-decisao-salvar-btn">Salvar</button>
+					<button type="button" class="btn  btn-default" data-dismiss="modal">Cancelar</button>
+				</div>
+				</div>
+				</div>
+</form>
+</div>
+</div>
+
+			
+		</div>
+
+					
+				
+		
+
+</body>
+</html>

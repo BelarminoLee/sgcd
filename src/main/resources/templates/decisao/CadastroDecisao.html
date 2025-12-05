@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com">
+
+<head>
+<title>Cadastro de decisão</title>
+<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/select2.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/ all.css}"/>	
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/AdminLTE.min.css}"/>
+</head>
+
+<body>
+	<section layout:fragment="conteudo">
+
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10">
+						<h1 th:if="${decisao.nova}">Cadastro de decisão</h1>
+						<h1 th:unless="${decisao.nova}"
+							th:text="|Edição da ${decisao.ambito}|">Edição de decisão</h1>
+					</div>
+
+					<div class="col-xs-2">
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-default" th:href="@{/decisoes}"> <i
+								class="glyphicon  glyphicon-plus-sign"></i> <span
+								class="hidden-xs  hidden-sm">Pesquisa</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+
+			<form method="POST" th:object="${decisao}"
+				class="form-vertical  js-form-loading"
+				>
+				<brewer:message />
+
+				<input type="hidden" th:field="*{codigo}" />
+				<input type="hidden" th:field="*{idDecisao}" />
+				
+
+				<div class="row">
+					<div class="col-sm-6  form-group  bw-required"
+						brewer:classforerror="entidade">
+						<label for="entidade" class="control-label">Entidade</label>
+						<div class="bw-field-action">
+							<select id="entidade" class="form-control" th:field="*{entidade}">
+								<option value="">Selecione a entidade</option>
+								<option th:each="entidade : ${entidades}"
+									th:value="${entidade.codigo}" th:text="${entidade.nome}"></option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-sm-6  form-group bw-required"
+						brewer:classforerror="ambito">
+						<label for="ambito" class="control-label">Ambito</label> <input
+							id="ambito" type="text" class="form-control" th:field="*{ambito}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 form-group  bw-required" brewer:classforerror="descricaoDecisao">
+						<label for="descricaoDecisao" class="control-label">Decisão</label>
+						<textarea id="descricaoDecisao" rows="3" class="form-control"
+							th:field="*{descricaoDecisao}"></textarea>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="form-group  col-sm-2">
+						<label for="dataDecisao" class="control-label">Data de decisão</label> 
+						<input type="text" class="form-control  js-date" id="dataDecisao" th:field="*{dataDecisao}" autocomplete="off" />
+					</div>
+					
+					<div class="form-group  col-sm-2">
+						<label for="prazo" class="control-label">Prazo</label> 
+						<input type="text" class="form-control  js-date" id="prazo" th:field="*{prazo}" autocomplete="off" />
+					</div>
+
+					<div class="form-group  col-md-4  bw-required"
+						th:classappend="${#fields.hasErrors('entidade')} ? has-error">
+						<label for="entidade" class="control-label">Responsaveis</label> 
+						<select  class="form-control select2" multiple="multiple"
+							th:field="*{pontosFocais}"
+							data-placeholder="Selecione o reponsavel" style="width: 100%;">
+							<option th:each="entidade : ${entidades}"
+								th:value="${entidade.codigo}" th:text="${entidade.pontoFocal}"></option>
+						</select>
+					</div>
+
+              <div class="col-sm-4  form-group  bw-required" brewer:classforerror="pontoSituacao">
+					<label for="pontoSituacao" class="control-label">Estado</label>
+					<select id="pontoSituacao" class="form-control" th:field="*{pontoSituacao}">
+						<option value="">Selecione o estado</option>
+						<option th:each="pontoSituacao : ${pontosSituacoes}" th:value="${pontoSituacao}" th:text="${pontoSituacao}"></option>
+					</select>
+				</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-12 form-group  bw-required"
+						brewer:classforerror="observacao">
+						<label for="observacao" class="control-label">Observação</label>
+						<textarea id="observacao" rows="5" class="form-control"
+							th:field="*{observacao}"></textarea>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<button class="btn  btn-primary" type="submit">Salvar</button>
+				</div>
+
+			</form>
+		</div>
+
+
+	</section>
+
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/select2.full.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/icheck.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+	<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();    
+
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass: 'iradio_minimal-blue'
+    });
+    //Red color scheme for iCheck
+    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+      checkboxClass: 'icheckbox_minimal-red',
+      radioClass: 'iradio_minimal-red'
+    });
+    //Flat red color scheme for iCheck
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-green',
+      radioClass: 'iradio_flat-green'
+    });
+   
+  });
+</script>
+	</th:block>
+
+</body>
+</html>

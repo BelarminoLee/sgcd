@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:brewer="http://brewer.algaworks.com">
+	
+<head>
+	<title>Cadastro de entidade</title>
+	
+	
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${entidade.nova}">Cadastro de entidade</h1>
+					<h1 th:unless="${entidade.nova}" th:text="|Edição da ${entidade.nome}|">Edição de entidade</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/entidades}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+
+		<form method="POST" th:object="${entidade}" class="form-vertical  js-form-loading" 
+				th:action="${entidade.nova} ? @{/entidades/nova} : @{/entidades/{codigo}(codigo=${entidade.codigo})}">
+			<brewer:message/>
+			
+			<input type="hidden" th:field="*{codigo}"/>
+	
+			<div class="row">
+				
+				
+				<div class="col-sm-12  form-group bw-required" brewer:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label>
+					<input id="nome" type="text" class="form-control" th:field="*{nome}"/>
+				</div>
+			</div>
+
+<div class="row">
+			<div class="col-sm-12 form-group  bw-required" brewer:classforerror="descricao">
+				<label for="descricao" class="control-label">Descrição</label>
+				<textarea id="descricao" rows="3" class="form-control" th:field="*{descricao}"></textarea>
+			</div>
+</div>
+			<div class="row">
+			
+			<div class="col-sm-12  form-group  bw-required" brewer:classforerror="pontoFocal">
+					<label for="pontoFocal" class="control-label">Ponto Focal</label>
+					<input id="pontoFocal" type="text" class="form-control" th:field="*{pontoFocal}"/>
+				</div>
+				
+				
+				</div>
+				
+				<div class="row">
+				<div class="form-group  col-sm-3">
+					<label for="telefone">Telefone</label>
+					<input type="text" class="form-control  js-phone-number" id="telefone" th:field="*{telefone}"/>
+				</div>
+				
+				<div class="form-group  col-sm-6" brewer:classforerror="email">
+					<label for="email" class="control-label">E-mail</label>
+					<input type="text" class="form-control" id="email" th:field="*{email}"/>
+				</div>
+				
+				<div class="form-group  col-sm-3">
+					<label class="control-label">Status</label>
+					<div>
+						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" 
+							data-on-text="Activo" data-off-text="Inactivo" th:field="*{activo}"/>
+					</div>
+				</div>
+				
+			</div>
+			
+			
+			
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+	
+	
+</section>
+
+<th:block layout:fragment="javascript-extra">
+
+	<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+	
+</th:block>
+	
+</body>
+</html>

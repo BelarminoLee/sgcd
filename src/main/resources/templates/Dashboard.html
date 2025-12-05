@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:brewer="http://brewer.algaworks.com"
+	layout:decorate="~{layout/LayoutPadrao}">
+
+<head>
+<title>Dashboard</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>Dashboard</h1>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="aw-box" style="background-color: #bdc3c7;">
+					<div class="aw-box__icon" style="color: white">
+						<i class="fa  fa-university  fa-3x"></i>
+					</div>
+					<div class="aw-box__value" th:text="${totalEntidades}">2</div>
+					<div class="aw-box__title">Entidades</div>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="aw-box" style="background-color: #e7e9fb">
+					<div class="aw-box__icon" style="color: white">
+						<i class="fa  fa-power-off   fa-3x"></i>
+					</div>
+					<div class="aw-box__value" th:text="${totalDecisoes}"></div>
+					<div class="aw-box__title">Decisões</div>
+				</div>
+			</div>
+
+
+			<div class="col-sm-4">
+				<div class="aw-box" style="background-color: #fdb415;">
+					<div class="aw-box__icon" style="color: white">
+						<i class="fa fa-hourglass-start fa-3x"></i>
+					</div>
+					<div class="aw-box__value" th:text="${totalPendente}">0</div>
+					<div class="aw-box__title">Pendente</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="row">
+
+			<div class="col-sm-4">
+				<div class="aw-box" style="background-color: #49abc8;">
+					<div class="aw-box__icon" style="color: white">
+						<i class="fa fa-refresh fa-3x"></i>
+					</div>
+					<div class="aw-box__value" th:text="${totalEmProgresso}">9</div>
+					<div class="aw-box__title">Em progresso</div>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="aw-box" style="background-color: #2ce386;">
+					<div class="aw-box__icon" style="color: white">
+						<i class="fa fa-check-circle fa-3x"></i>
+					</div>
+					<div class="aw-box__value" th:text="${totalConcluido}">0</div>
+					<div class="aw-box__title">Concluído</div>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="aw-box" style="background-color: #e74c3c;">
+					<div class="aw-box__icon" style="color: white">
+						<i class="fa fa-exclamation-triangle fa-3x"></i>
+					</div>
+					<div class="aw-box__value" th:text="${totalAtrasado}">0</div>
+					<div class="aw-box__title">Atrasado</div>
+				</div>
+			</div>
+
+
+
+
+		</div>
+		
+		<div class="row" th:each="ent : ${estatisticas}">
+  <div class="col-md-12">
+    <div class="aw-box" style="background-color: #f9f9f9; padding: 15px; margin-bottom: 20px;">
+      <h4 th:text="${ent.nomeEntidade}">Nome da Entidade</h4>
+      <ul class="list-group">
+        <li class="list-group-item"
+    th:each="entry : ${ent.totaisPorSituacao}"
+    th:switch="${entry.key.name()}">
+  
+  <span th:case="'PENDENTE'" class="list-group-item list-group-item-warning">
+    <span th:text="${entry.key}">PENDENTE</span>: <strong th:text="${entry.value}">0</strong>
+  </span>
+  
+  <span th:case="'EM_PROGRESSO'" class="list-group-item list-group-item-info">
+    <span th:text="${entry.key}">EM_PROGRESSO</span>: <strong th:text="${entry.value}">0</strong>
+  </span>
+  
+  <span th:case="'CONCLUIDA'" class="list-group-item list-group-item-success">
+    <span th:text="${entry.key}">CONCLUIDA</span>: <strong th:text="${entry.value}">0</strong>
+  </span>
+  
+  <span th:case="*"
+        class="list-group-item list-group-item-danger">
+    <span th:text="${entry.key}">OUTRO</span>: <strong th:text="${entry.value}">0</strong>
+  </span>
+</li>
+      </ul>
+    </div>
+  </div>
+</div>
+	</div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/Chart.min.js}"></script>
+	<script th:src="@{/javascripts/dashboard.graficos.js}"></script>
+
+
+</th:block>
+
+</html>
